@@ -8,11 +8,9 @@ services:
       JWT_SECRET: ${JWT_SECRET}
     depends_on:
       - postgres
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost/"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
+    networks:
+      - default
+      - dokploy-network
 
   postgres:
     image: postgres:15
@@ -23,6 +21,12 @@ services:
       POSTGRES_DB: ${DB_NAME}
     volumes:
       - dev_pg_data:/var/lib/postgresql/data
+    networks:
+      - default
 
 volumes:
   dev_pg_data:
+
+networks:
+  dokploy-network:
+    external: true

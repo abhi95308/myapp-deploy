@@ -1,36 +1,28 @@
-version: '3.9'
+version: "3.9"
 services:
   web:
     image: nginxdemos/hello:latest
     restart: always
-    environment:
-      NODE_ENV: $NODE_ENV
-      DB_URL: $DB_URL
-      JWT_SECRET: $JWT_SECRET
+    ports:
+      - "8080:80"
     depends_on:
       - postgres
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=dokploy-network
-      - traefik.http.routers.myappdev.rule=Host(`dev.3.106.183.113.nip.io`)
-      - traefik.http.routers.myappdev.entrypoints=web
-      - traefik.http.services.myappdev.loadbalancer.server.port=80
     networks:
+      - default
       - dokploy-network
-      - default   # so it can still talk to postgres
 
   postgres:
     image: postgres:15
     restart: always
     environment:
-      POSTGRES_USER: $DB_USER
-      POSTGRES_PASSWORD: $DB_PASSWORD
-      POSTGRES_DB: $DB_NAME
+      POSTGRES_USER: dev_user
+      POSTGRES_PASSWORD: devpass123
+      POSTGRES_DB: myapp
     volumes:
       - dev_pg_data:/var/lib/postgresql/data
     networks:
-      - default   # ensures it can talk to web
-      - dokploy-network  # optional, if you want Traefik to see it (not usually needed)
+      - default
+      - dokploy-network
 
 volumes:
   dev_pg_data:

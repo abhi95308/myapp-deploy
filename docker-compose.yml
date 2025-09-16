@@ -1,3 +1,4 @@
+version: "3.9"
 services:
   web:
     image: nginxdemos/hello:latest
@@ -8,6 +9,13 @@ services:
       - postgres
     networks:
       - default
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.50"
+        reservations:
+          memory: 128M
 
   postgres:
     image: postgres:15
@@ -20,6 +28,13 @@ services:
       - dev_pg_data:/var/lib/postgresql/data
     networks:
       - default
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.50"
+        reservations:
+          memory: 256M
 
 volumes:
   dev_pg_data:

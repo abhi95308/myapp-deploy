@@ -1,40 +1,25 @@
-version: "3.9"
-services:
-  web:
-    image: nginxdemos/hello:latest
-    restart: always
-    ports:
-      - "8080:80"
-    depends_on:
-      - postgres
-    networks:
-      - default
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-          cpus: "0.50"
-        reservations:
-          memory: 128M
+   services:
+     web:
+       image: nginxdemos/hello:latest
+       restart: always
+       ports:
+         - "8080:80"
+       depends_on:
+         - postgres
+       networks:
+         - default
 
-  postgres:
-    image: postgres:15
-    restart: always
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
-      POSTGRES_DB: mydb
-    volumes:
-      - dev_pg_data:/var/lib/postgresql/data
-    networks:
-      - default
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-          cpus: "0.50"
-        reservations:
-          memory: 256M
+     postgres:
+       image: postgres:15
+       restart: always
+       environment:
+         POSTGRES_USER: nginx
+         POSTGRES_PASSWORD: nginx
+         POSTGRES_DB: pgdb
+       volumes:
+         - dev_pg_data:/var/lib/postgresql/data
+       networks:
+         - default
 
-volumes:
-  dev_pg_data:
+   volumes:
+     dev_pg_data:

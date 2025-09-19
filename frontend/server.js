@@ -19,5 +19,5 @@ app.get("/", (_req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(\`Frontend running on port \${PORT}\`);
+  console.log(`Frontend running on port ${PORT}`);
 });

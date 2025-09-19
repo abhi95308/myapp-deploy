@@ -8,12 +8,8 @@ services:
       NODE_ENV: ${NODE_ENV}
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
       PORT: 3000
-    expose:
-      - "3000"
     volumes:
       - ./frontend:/app
-    depends_on:
-      - api
     networks:
       - dokploy-network
     labels:
@@ -35,13 +31,8 @@ services:
       REDIS_URL: ${REDIS_URL}
       JWT_SECRET: ${JWT_SECRET}
       PORT: 4000
-    expose:
-      - "4000"
     volumes:
       - ./api:/app
-    depends_on:
-      - postgres
-      - redis
     networks:
       - dokploy-network
     labels:

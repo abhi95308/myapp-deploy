@@ -3,10 +3,11 @@ services:
     image: node:20-alpine
     restart: always
     working_dir: /app
-    command: sh -c "npx serve -s build -l 3000 || (npm ci && npm run build && npx serve -s build -l 3000)"
+    command: sh -c "npm install && node server.js"
     environment:
       NODE_ENV: ${NODE_ENV}
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+      PORT: 3000
     expose:
       - "3000"
     volumes:
@@ -18,7 +19,7 @@ services:
     image: node:20-alpine
     restart: always
     working_dir: /app
-    command: sh -c "node server.js"
+    command: sh -c "npm install && node server.js"
     environment:
       NODE_ENV: ${NODE_ENV}
       DATABASE_URL: ${DATABASE_URL}

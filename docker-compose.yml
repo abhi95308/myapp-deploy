@@ -17,12 +17,12 @@ services:
     networks:
       - dokploy-network
     labels:
-      - traefik.enable=true
-      - traefik.docker.network=dokploy-network
-      - traefik.http.routers.frontend.rule=Host(`app.54.206.49.116.nip.io`)
-      - traefik.http.routers.frontend.entrypoints=web,websecure
-      - traefik.http.routers.frontend.tls.certresolver=letsencrypt
-      - traefik.http.services.frontend.loadbalancer.server.port=3000
+      - "traefik.enable=true"
+      - "traefik.docker.network=dokploy-network"
+      - "traefik.http.routers.frontend.rule=Host(`app.54.206.49.116.nip.io`)"
+      - "traefik.http.routers.frontend.entrypoints=web,websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
 
   api:
     image: node:20-alpine
@@ -45,12 +45,12 @@ services:
     networks:
       - dokploy-network
     labels:
-      - traefik.enable=true
-      - traefik.docker.network=dokploy-network
-      - traefik.http.routers.api.rule=Host(`api.54.206.49.116.nip.io`)
-      - traefik.http.routers.api.entrypoints=web,websecure
-      - traefik.http.routers.api.tls.certresolver=letsencrypt
-      - traefik.http.services.api.loadbalancer.server.port=4000
+      - "traefik.enable=true"
+      - "traefik.docker.network=dokploy-network"
+      - "traefik.http.routers.api.rule=Host(`api.54.206.49.116.nip.io`)"
+      - "traefik.http.routers.api.entrypoints=web,websecure"
+      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
+      - "traefik.http.services.api.loadbalancer.server.port=4000"
 
   postgres:
     image: postgres:15

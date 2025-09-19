@@ -1,21 +1,12 @@
 services:
   frontend:
     image: node:20-alpine
-    restart: always
     working_dir: /app
     command: sh -c "npm install && node server.js"
-    environment:
-      NODE_ENV: ${NODE_ENV}
-      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
-      PORT: 3000
-    expose:
-      - "3000"
     volumes:
       - ./frontend:/app
-    depends_on:
-      - api
-    networks:
-      - dokploy-network
+    environment:
+      - PORT=3000
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=dokploy-network"
@@ -23,27 +14,17 @@ services:
       - "traefik.http.routers.frontend.entrypoints=web,websecure"
       - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
       - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+    networks:
+      - dokploy-network
 
   api:
     image: node:20-alpine
-    restart: always
     working_dir: /app
     command: sh -c "npm install && node server.js"
-    environment:
-      NODE_ENV: ${NODE_ENV}
-      DATABASE_URL: ${DATABASE_URL}
-      REDIS_URL: ${REDIS_URL}
-      JWT_SECRET: ${JWT_SECRET}
-      PORT: 4000
-    expose:
-      - "4000"
     volumes:
       - ./api:/app
-    depends_on:
-      - postgres
-      - redis
-    networks:
-      - dokploy-network
+    environment:
+      - PORT=4000
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=dokploy-network"
@@ -51,27 +32,8 @@ services:
       - "traefik.http.routers.api.entrypoints=web,websecure"
       - "traefik.http.routers.api.tls.certresolver=letsencrypt"
       - "traefik.http.services.api.loadbalancer.server.port=4000"
-
-  postgres:
-    image: postgres:15
-    restart: always
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-    volumes:
-      - pg_data:/var/lib/postgresql/data
     networks:
       - dokploy-network
-
-  redis:
-    image: redis:7
-    restart: always
-    networks:
-      - dokploy-network
-
-volumes:
-  pg_data:
 
 networks:
   dokploy-network:

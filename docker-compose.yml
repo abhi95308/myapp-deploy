@@ -1,1 +1,34 @@
-# (paste the YAML above here)
+services:
+  web:
+    build: ./web
+    restart: always
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      APP_BASE_URL: ${APP_BASE_URL}
+      DATABASE_URL: ${DATABASE_URL}
+      SECRET_KEY: ${SECRET_KEY}
+    depends_on:
+      - postgres
+    # Attach to default (to talk to postgres) and dokploy-network (so Traefik can reach it)
+    networks:
+      - default
+      - dokploy-network
+
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - default
+
+volumes:
+  pg_data:
+
+networks:
+  dokploy-network:
+    external: true

@@ -9,6 +9,9 @@ services:
       SECRET_KEY: ${SECRET_KEY}
     depends_on:
       - postgres
+    networks:
+      - default
+      - dokploy-network
 
   postgres:
     image: postgres:15
@@ -19,6 +22,12 @@ services:
       POSTGRES_DB: ${DB_NAME}
     volumes:
       - pg_data:/var/lib/postgresql/data
+    networks:
+      - default
 
 volumes:
   pg_data:
+
+networks:
+  dokploy-network:
+    external: true

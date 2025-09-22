@@ -1,40 +1,25 @@
 services:
-  frontend:
-    image: node:20-alpine
-    working_dir: /app
-    command: sh -c "npm install && node server.js"
-    volumes:
-      - ./frontend:/app
+  web:
+    build: ./web
+    restart: always
     environment:
-      - PORT=3000
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=dokploy-network"
-      - "traefik.http.routers.frontend.rule=Host(`app.54.206.49.116.nip.io`)"
-      - "traefik.http.routers.frontend.entrypoints=web,websecure"
-      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
-      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
-    networks:
-      - dokploy-network
+      NODE_ENV: ${NODE_ENV}
+      APP_BASE_URL: ${APP_BASE_URL}
+      DATABASE_URL: ${DATABASE_URL}
+      SECRET_KEY: ${SECRET_KEY}
+    depends_on:
+      - postgres
+    # ⚠️ No ports exposed — Dokploy/Traefik routes by domain (set in dashboard)
 
-  api:
-    image: node:20-alpine
-    working_dir: /app
-    command: sh -c "npm install && node server.js"
-    volumes:
-      - ./api:/app
+  postgres:
+    image: postgres:15
+    restart: always
     environment:
-      - PORT=4000
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=dokploy-network"
-      - "traefik.http.routers.api.rule=Host(`api.54.206.49.116.nip.io`)"
-      - "traefik.http.routers.api.entrypoints=web,websecure"
-      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
-      - "traefik.http.services.api.loadbalancer.server.port=4000"
-    networks:
-      - dokploy-network
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
 
-networks:
-  dokploy-network:
-    external: true
+volumes:
+  pg_data:

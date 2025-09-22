@@ -15,22 +15,18 @@ services:
   postgres:
     image: postgres:15
     restart: always
-    hostname: postgres
-    container_name: myappprod-postgres
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+    networks:
+      - dokploy-network
     volumes:
       - pg_data:/var/lib/postgresql/data
-    networks:
-      dokploy-network:
-        aliases:
-          - postgres
-
-volumes:
-  pg_data:
 
 networks:
   dokploy-network:
     external: true
+
+volumes:
+  pg_data:

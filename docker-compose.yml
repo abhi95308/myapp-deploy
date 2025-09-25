@@ -1,25 +1,25 @@
-   services:
-     web:
-       image: nginxdemos/hello:latest
-       restart: always
-       ports:
-         - "8080:80"
-       depends_on:
-         - postgres
-       networks:
-         - default
+services:
+  web:
+    image: nginxdemos/hello:latest
+    restart: always
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+    networks:
+      - default
 
-     postgres:
-       image: postgres:15
-       restart: always
-       environment:
-         POSTGRES_USER: nginx
-         POSTGRES_PASSWORD: nginx
-         POSTGRES_DB: pgdb
-       volumes:
-         - dev_pg_data:/var/lib/postgresql/data
-       networks:
-         - default
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: nginx
+      POSTGRES_PASSWORD: nginx
+      POSTGRES_DB: pgdb
+    volumes:
+      - dev_pg_data:/var/lib/postgresql/data
+    networks:
+      - default
 
-   volumes:
-     dev_pg_data:
+volumes:
+  dev_pg_data:

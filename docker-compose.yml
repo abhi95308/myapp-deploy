@@ -15,11 +15,11 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=dokploy-network
-      - traefik.http.routers.myapp-web.rule=Host(`prod.54.206.49.116.nip.io`)
+      - traefik.http.routers.myapp-web.rule=Host(`prod.3.27.109.52.nip.io`)
       - traefik.http.routers.myapp-web.entrypoints=web
       - traefik.http.routers.myapp-web.middlewares=myapp-redirecthttps@docker
       - traefik.http.routers.myapp-web.service=myapp-svc
-      - traefik.http.routers.myapp-websecure.rule=Host(`prod.54.206.49.116.nip.io`)
+      - traefik.http.routers.myapp-websecure.rule=Host(`prod.3.27.109.52.nip.io`)
       - traefik.http.routers.myapp-websecure.entrypoints=websecure
       - traefik.http.routers.myapp-websecure.tls.certresolver=letsencrypt
       - traefik.http.routers.myapp-websecure.service=myapp-svc
